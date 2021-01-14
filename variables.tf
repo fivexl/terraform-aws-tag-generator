@@ -2,8 +2,8 @@ variable "prefix" {
   type    = string
   default = "default"
   validation {
-    condition     = !contains(["aws", "lambda-console", "elasticbeanstalk"], var.prefix)
-    error_message = "Impossible to use `aws`,`lambda-console`,`elasticbeanstalk` here."
+    condition     = !contains(["aws", "lambda-console", "elasticbeanstalk", "AWS"], var.prefix)
+    error_message = "Impossible to use `aws`,`lambda-console`,`elasticbeanstalk`, `AWS` here."
   }
 }
 
