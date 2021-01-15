@@ -49,9 +49,9 @@ Based on AWS Tagging Best Practices:
 
 | Name | Description |
 |------|-------------|
-| result | result with tags `object{}`|
-| result_asg_list | result with list of tags for ASG `tuple[object{}]` `propagate_at_launch=true`|
-| result_asg_list_false | result with list of tags for ASG `tuple[object{}]` `propagate_at_launch=false`|
+| result | result with tags `object{}` |
+| result_asg_list | result with list of tags for ASG `tuple[object{}]` `propagate_at_launch=true` |
+| result_asg_list_false | result with list of tags for ASG `tuple[object{}]` `propagate_at_launch=false` |
 
 
 ## License
