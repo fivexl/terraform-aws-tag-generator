@@ -1,12 +1,7 @@
 [![FivexL](https://releases.fivexl.io/fivexlbannergit.jpg)](https://fivexl.io/)
 
 # AWS Tag Generator Terraform module
-Simple tag generator for AWS resources using [best practices from AWS](https://d1.awsstatic.com/whitepapers/aws-tagging-best-practices.pdf)  
-
-Based on AWS Tagging Best Practices:
- - tag keys must be all lowercase
- - hyphens for separating words
- - prefix identifying the organization name or abbreviated name, or a project name
+Simple tag generator for AWS resources based on FivexL expirience and [best practices from AWS](https://d1.awsstatic.com/whitepapers/aws-tagging-best-practices.pdf)  
 
 ## Known AWS tags
 - ECS Capacity Provider add `AmazonECSManaged=1` tag to ASG
