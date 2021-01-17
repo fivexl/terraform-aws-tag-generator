@@ -13,6 +13,7 @@ Simple tag generator for AWS resources based on FivexL expirience and [best prac
 | terraform | >= 0.13 |
 | external | >= 2.0 |
 | bash | - |
+| git | - |
 
 ## Inputs
 
