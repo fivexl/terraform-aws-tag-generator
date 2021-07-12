@@ -28,7 +28,15 @@ locals {
   gc_ttl              = "${local.main_prefix}${var.separator}garbage-collector${var.separator}time-to-live"
   gc_other            = "${local.main_prefix}${var.separator}garbage-collector${var.separator}other"
 
-  git_origin_url    = trimprefix(trimprefix(trimsuffix(lower(data.external.git_origin_url.result["Result"]), ".git"), "git@github.com:"), "https://github.com/")
+  # We are dealing with situation when url will be one of those two
+  # git@github.com:fivexl/terraform-aws-tag-generator.git
+  # https://github.com/fivexl/terraform-aws-tag-generator.git
+  # So what we do is we trim off possible prefixes - git@ and https://
+  # as well as suffix .git
+  # final step we replace : in case of git based url to / so the result will be the same string
+  # no matter what type of download is being used
+  git_origin_url    = replace(trimprefix(trimprefix(trimsuffix(lower(data.external.git_origin_url.result["Result"]), ".git"), "git@"), "https://"), ":", "/")
+
   git_module_source = lower(data.external.git_module_source.result["Result"])
 
   git_remote_value          = local.git_origin_url != "" ? { (local.git_remote) = local.git_origin_url } : {}
