@@ -35,7 +35,7 @@ locals {
   # as well as suffix .git
   # final step we replace : in case of git based url to / so the result will be the same string
   # no matter what type of download is being used
-  git_origin_url    = replace(trimprefix(trimprefix(trimsuffix(lower(data.external.git_origin_url.result["Result"]), ".git"), "git@"), "https://"), ":", "/")
+  git_origin_url = replace(trimprefix(trimprefix(trimsuffix(lower(data.external.git_origin_url.result["Result"]), ".git"), "git@"), "https://"), ":", "/")
 
   git_module_source = lower(data.external.git_module_source.result["Result"])
 
