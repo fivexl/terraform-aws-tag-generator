@@ -31,11 +31,13 @@ locals {
   # We are dealing with situation when url will be one of those two
   # git@github.com:fivexl/terraform-aws-tag-generator.git
   # https://github.com/fivexl/terraform-aws-tag-generator.git
-  # So what we do is we trim off possible prefixes - git@ and https://
+  # So what we do is we trim off possible prefixes - git@ and https://, gitlab-ci-token/v3negve68nshszztr6f8@
   # as well as suffix .git
   # final step we replace : in case of git based url to / so the result will be the same string
   # no matter what type of download is being used
-  git_origin_url = replace(trimprefix(trimprefix(trimsuffix(lower(data.external.git_origin_url.result["Result"]), ".git"), "git@"), "https://"), ":", "/")
+  git_origin_url_raw      = lower(data.external.git_origin_url.result["Result"])
+  git_origin_url_splitted = length(split("@", local.git_origin_url_raw)) > 1 ? split("@", local.git_origin_url_raw)[1] : local.git_origin_url_raw
+  git_origin_url          = replace(trimprefix(trimsuffix(local.git_origin_url_splitted, ".git"), "https://"), ":", "/")
 
   git_module_source = lower(data.external.git_module_source.result["Result"])
 
