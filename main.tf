@@ -90,5 +90,6 @@ locals {
 
   result_asg       = [for k, v in local.result : { key = k, value = v, propagate_at_launch = true }]
   result_asg_false = [for k, v in local.result : { key = k, value = v, propagate_at_launch = false }]
+  result_awscc     = [for k, v in local.result : { key = k, value = v }]
 }
 
