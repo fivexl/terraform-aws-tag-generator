@@ -41,5 +41,13 @@ resource "aws_autoscaling_group" "test" {
     version = "$Latest"
   }
 
-  tags = module.tags.result_asg_list
+  dynamic "tag" {
+    for_each = module.tags.result_asg_list
+    content {
+      key                 = tag.value.key
+      value               = tag.value.value
+      propagate_at_launch = tag.value.propagate_at_launch
+    }
+  }
+
 }
