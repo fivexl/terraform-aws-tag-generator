@@ -70,40 +70,59 @@ locals {
     { for k, v in var.custom_numbers : join(var.separator, [local.main_prefix, local.custom_prefix, lower(k)]) => v },
   )
 
-  result = merge(
+  result_git = merge(
     local.git_remote_value,
     local.git_module_value,
     local.git_other_value,
+  )
+
+  result_terraform = merge(
     local.terraform_managed_value,
     local.terraform_state_value,
     local.terraform_other_value,
+  )
+
+  result_data = merge(
     local.data_pii_value,
     local.data_phi_value,
     local.data_pci_value,
     local.data_owner_value,
     local.data_classification_value,
     local.data_other_value,
+  )
+
+  result_enviroment = merge(
     local.environment_name_value,
     local.environment_type_value,
     local.environment_other_value,
+  )
+
+  result_gc = merge(
     local.gc_enable_value,
     local.gc_ttl_value,
     local.gc_other_value,
-    local.backup_enable_value,
-    local.backup_other_value,
-    local.custom_value,
   )
 
+  result_backup = merge(
+    local.backup_enable_value,
+    local.backup_other_value,
+  )
+
+  result_custom = local.custom_value
+
   result_data_environment = merge(
-    local.data_pii_value,
-    local.data_phi_value,
-    local.data_pci_value,
-    local.data_owner_value,
-    local.data_classification_value,
-    local.data_other_value,
-    local.environment_name_value,
-    local.environment_type_value,
-    local.environment_other_value,
+    local.result_data,
+    local.result_enviroment,
+  )
+
+  result = merge(
+    local.result_git,
+    local.result_terraform,
+    local.result_data,
+    local.result_enviroment,
+    local.result_gc,
+    local.result_backup,
+    local.result_custom,
   )
 
   result_asg       = [for k, v in local.result : { key = k, value = v, propagate_at_launch = true }]

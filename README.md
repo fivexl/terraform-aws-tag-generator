@@ -69,6 +69,8 @@ No modules.
 | <a name="output_result_asg_list"></a> [result\_asg\_list](#output\_result\_asg\_list) | result with list of tags for ASG `tuple[object{}]` `propagate_at_launch=true` |
 | <a name="output_result_asg_list_false"></a> [result\_asg\_list\_false](#output\_result\_asg\_list\_false) | result with list of tags for ASG `tuple[object{}]` `propagate_at_launch=false` |
 | <a name="output_result_awscc"></a> [result\_awscc](#output\_result\_awscc) | result with list of tags for AWS Cloud Control API terraform provider `tuple[object{key=key, value=value}]` |
+| <a name="output_result_data_environment"></a> [result\_data\_environment](#output\_result\_data\_environment) | result with only data and environment tags. No more than 10 tags. Usefull for S3 Objects. |
+| <a name="output_result_map"></a> [result\_map](#output\_result\_map) | map of results with tags |
 <!-- END_TF_DOCS -->
 
 ## License

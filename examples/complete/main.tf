@@ -23,3 +23,7 @@ module "tags" {
 output "result" {
   value = module.tags.result
 }
+
+output "result_map" {
+  value = module.tags.result_map
+}

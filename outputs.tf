@@ -3,6 +3,19 @@ output "result" {
   value       = local.result
 }
 
+output "result_map" {
+  description = "map of results with tags"
+  value = {
+    "git"        = local.result_git,
+    "terraform"  = local.result_terraform,
+    "data"       = local.result_data,
+    "enviroment" = local.result_enviroment,
+    "gc"         = local.result_gc,
+    "backup"     = local.result_backup,
+    "custom"     = local.result_custom,
+  }
+}
+
 output "result_asg_list" {
   description = "result with list of tags for ASG `tuple[object{}]` `propagate_at_launch=true`"
   value       = local.result_asg
@@ -18,14 +31,8 @@ output "result_awscc" {
   value       = local.result_awscc
 }
 
-## Custom results
-
 output "result_data_environment" {
   description = "result with only data and environment tags. No more than 10 tags. Usefull for S3 Objects."
   value       = local.result_data_environment
 }
 
-output "result_custom" {
-  description = "result with only custom tags."
-  value       = local.custom_value
-}
