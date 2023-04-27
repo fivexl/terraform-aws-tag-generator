@@ -65,7 +65,7 @@ locals {
   backup_other_value        = var.backup_other != "" ? { (local.backup_other) = var.backup_other } : {}
 
   custom_prefix = lower(var.custom_prefix)
-  custom = merge(
+  custom_value = merge(
     { for k, v in var.custom_strings : join(var.separator, [local.main_prefix, local.custom_prefix, lower(k)]) => v },
     { for k, v in var.custom_numbers : join(var.separator, [local.main_prefix, local.custom_prefix, lower(k)]) => v },
   )
@@ -91,7 +91,19 @@ locals {
     local.gc_other_value,
     local.backup_enable_value,
     local.backup_other_value,
-    local.custom,
+    local.custom_value,
+  )
+
+  result_data_environment = merge(
+    local.data_pii_value,
+    local.data_phi_value,
+    local.data_pci_value,
+    local.data_owner_value,
+    local.data_classification_value,
+    local.data_other_value,
+    local.environment_name_value,
+    local.environment_type_value,
+    local.environment_other_value,
   )
 
   result_asg       = [for k, v in local.result : { key = k, value = v, propagate_at_launch = true }]

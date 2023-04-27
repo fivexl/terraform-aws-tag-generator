@@ -17,3 +17,15 @@ output "result_awscc" {
   description = "result with list of tags for AWS Cloud Control API terraform provider `tuple[object{key=key, value=value}]`"
   value       = local.result_awscc
 }
+
+## Custom results
+
+output "result_data_environment" {
+  description = "result with only data and environment tags. No more than 10 tags. Usefull for S3 Objects."
+  value       = local.result_data_environment
+}
+
+output "result_custom" {
+  description = "result with only custom tags."
+  value       = local.custom_value
+}
