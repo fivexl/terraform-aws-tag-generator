@@ -13,10 +13,15 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@master
+      - uses: terraform-linters/setup-tflint@v3
+        name: Setup TFLint
+        with:
+          tflint_version: v0.46.0      
       - name: TFLint
         run: |
-          curl https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
-          tflint
+          tflint -f compact
+        env:
+          GITHUB_TOKEN: ${{ github.token }}  # https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/plugins.md#avoiding-rate-limiting
 
   fmt:
     name: fmt
@@ -47,6 +52,58 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: TFSec
-        uses: triat/terraform-security-scan@v3.0.0
+        uses: triat/terraform-security-scan@v3.0.3
         with:
           tfsec_actions_comment: false
+
+  localstack:
+    name: localstack
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash    
+    env:
+      AWS_DEFAULT_REGION: "eu-central-1"
+      TF_CLI_ARGS_plan: "-compact-warnings"
+      TF_CLI_ARGS_apply: "-compact-warnings"     
+    services:
+      localstack-service:
+        image: localstack/localstack
+        ports:
+          - "4566:4566"
+          - "4510-4559:4510-4559"
+        env:
+          #SERVICES: "sqs,s3"
+          FORCE_NONINTERACTIVE: 1
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+        options: >-
+          --health-cmd "./bin/localstack status services"
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
+          --health-start-period 15s 
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock # https://docs.localstack.cloud/references/lambda-provider-v2/#docker-not-available 
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.4.4
+
+      - name: Terraform-local installation
+        run: pip3 install terraform-local
+
+      - name: terraform init
+        run: tflocal init
+        
+      - name: terraform validate
+        run: tflocal validate
+        
+      - name: terraform plan
+        run: tflocal plan -out=plan.tfplan
+
+      - name: terraform apply
+        run: tflocal apply -auto-approve plan.tfplan
