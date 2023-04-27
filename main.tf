@@ -50,7 +50,7 @@ locals {
   terraform_state_value     = var.terraform_state != "" ? { (local.terraform_state) = var.terraform_state } : {}
   terraform_other_value     = var.terraform_other != "" ? { (local.terraform_other) = var.terraform_other } : {}
   data_pii_value            = var.data_pii != "" ? { (local.data_pii) = var.data_pii } : {}
-  data_phi_value            = var.data_phi != "" ? { (local.data_pii) = var.data_phi } : {}
+  data_phi_value            = var.data_phi != "" ? { (local.data_phi) = var.data_phi } : {}
   data_pci_value            = var.data_pci != "" ? { (local.data_pci) = var.data_pci } : {}
   data_owner_value          = var.data_owner != "" ? { (local.data_owner) = var.data_owner } : {}
   data_classification_value = var.data_classification != "" ? { (local.data_classification) = var.data_classification } : {}
