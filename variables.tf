@@ -114,6 +114,18 @@ variable "gc_other" {
   default     = ""
 }
 
+variable "backup_enable" {
+  description = "pre templated tag `default:backup:enable`. Enable Backup for this resource"
+  type        = string
+  default     = ""
+}
+
+variable "backup_other" {
+  description = "pre templated tag `default:backup:other`. Other for Backup"
+  type        = string
+  default     = ""
+}
+
 variable "custom_prefix" {
   description = "secondary level prefix for custom tags, which could be added by `custom_strings` and `custom_numbers`"
   type        = string

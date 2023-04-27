@@ -27,6 +27,8 @@ locals {
   gc_enable           = "${local.main_prefix}${var.separator}garbage-collector${var.separator}enable"
   gc_ttl              = "${local.main_prefix}${var.separator}garbage-collector${var.separator}time-to-live"
   gc_other            = "${local.main_prefix}${var.separator}garbage-collector${var.separator}other"
+  backup_enable       = "${local.main_prefix}${var.separator}backup${var.separator}enable"
+  backup_other        = "${local.main_prefix}${var.separator}backup${var.separator}other"
 
   # We are dealing with situation when url will be one of those two
   # git@github.com:fivexl/terraform-aws-tag-generator.git
@@ -59,6 +61,8 @@ locals {
   gc_enable_value           = var.gc_enable != "" ? { (local.gc_enable) = var.gc_enable } : {}
   gc_ttl_value              = var.gc_ttl != "" ? { (local.gc_ttl) = var.gc_ttl } : {}
   gc_other_value            = var.gc_other != "" ? { (local.gc_other) = var.gc_other } : {}
+  backup_enable_value       = var.backup_enable != "" ? { (local.backup_enable) = var.backup_enable } : {}
+  backup_other_value        = var.backup_other != "" ? { (local.backup_other) = var.backup_other } : {}
 
   custom_prefix = lower(var.custom_prefix)
   custom = merge(
@@ -85,6 +89,8 @@ locals {
     local.gc_enable_value,
     local.gc_ttl_value,
     local.gc_other_value,
+    local.backup_enable_value,
+    local.backup_other_value,
     local.custom,
   )
 

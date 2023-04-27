@@ -6,6 +6,7 @@ Simple tag generator for AWS resources based on FivexL expirience and [best prac
 ## Known AWS tags
 - ECS Capacity Provider add `AmazonECSManaged=1` tag to ASG
 
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -36,6 +37,8 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_backup_enable"></a> [backup\_enable](#input\_backup\_enable) | pre templated tag `default:backup:enable`. Enable Backup for this resource | `string` | `""` | no |
+| <a name="input_backup_other"></a> [backup\_other](#input\_backup\_other) | pre templated tag `default:backup:other`. Other for Backup | `string` | `""` | no |
 | <a name="input_custom_numbers"></a> [custom\_numbers](#input\_custom\_numbers) | custom tags, which must be strings. e.g. (`default:custom:mynumber = 5000`) | `map(number)` | `{}` | no |
 | <a name="input_custom_prefix"></a> [custom\_prefix](#input\_custom\_prefix) | secondary level prefix for custom tags, which could be added by `custom_strings` and `custom_numbers` | `string` | `"custom"` | no |
 | <a name="input_custom_strings"></a> [custom\_strings](#input\_custom\_strings) | custom tags, which must be strings. e.g. (`default:custom:mystring = "mystring"`) | `map(string)` | `{}` | no |
@@ -66,7 +69,7 @@ No modules.
 | <a name="output_result_asg_list"></a> [result\_asg\_list](#output\_result\_asg\_list) | result with list of tags for ASG `tuple[object{}]` `propagate_at_launch=true` |
 | <a name="output_result_asg_list_false"></a> [result\_asg\_list\_false](#output\_result\_asg\_list\_false) | result with list of tags for ASG `tuple[object{}]` `propagate_at_launch=false` |
 | <a name="output_result_awscc"></a> [result\_awscc](#output\_result\_awscc) | result with list of tags for AWS Cloud Control API terraform provider `tuple[object{key=key, value=value}]` |
-
+<!-- END_TF_DOCS -->
 
 ## License
 

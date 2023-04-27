@@ -10,6 +10,8 @@ module "tags" {
   environment_name  = "test"
   gc_enable         = "1"
   gc_ttl            = "7"
+  backup_enable     = "1"
+  backup_other      = "Used Service: AWS Backup"
 }
 
 output "result" {
