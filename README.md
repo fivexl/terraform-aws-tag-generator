@@ -20,7 +20,7 @@ Simple tag generator for AWS resources based on FivexL expirience and [best prac
 
 | Name | Version |
 |------|---------|
-| <a name="provider_external"></a> [external](#provider\_external) | 2.0.0 |
+| <a name="provider_external"></a> [external](#provider\_external) | 2.3.1 |
 
 ## Modules
 
@@ -38,6 +38,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_backup_enable"></a> [backup\_enable](#input\_backup\_enable) | pre templated tag `default:backup:enable`. Enable Backup for this resource | `string` | `""` | no |
+| <a name="input_backup_frequency"></a> [backup\_frequency](#input\_backup\_frequency) | pre templated tag `default:backup:frequency`. Backup frequency (daily/weekly/monthly) | `string` | `""` | no |
 | <a name="input_backup_other"></a> [backup\_other](#input\_backup\_other) | pre templated tag `default:backup:other`. Other for Backup | `string` | `""` | no |
 | <a name="input_custom_numbers"></a> [custom\_numbers](#input\_custom\_numbers) | custom tags, which must be strings. e.g. (`default:custom:mynumber = 5000`) | `map(number)` | `{}` | no |
 | <a name="input_custom_prefix"></a> [custom\_prefix](#input\_custom\_prefix) | secondary level prefix for custom tags, which could be added by `custom_strings` and `custom_numbers` | `string` | `"custom"` | no |

@@ -11,6 +11,7 @@ module "tags" {
   gc_enable         = "1"
   gc_ttl            = "7"
   backup_enable     = "1"
+  backup_frequency = "Daily"
   backup_other      = "Used Service: AWS Backup"
   custom_strings = {
     custom_tag_text = "Value"
