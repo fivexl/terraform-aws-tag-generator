@@ -122,8 +122,8 @@ variable "backup_enable" {
 
 variable "backup_frequency" {
   description = "pre templated tag `default:backup:frequency`. Backup frequency (daily/weekly/monthly)"
-  type         = string
-  default      = ""
+  type        = string
+  default     = ""
 }
 
 variable "backup_other" {
