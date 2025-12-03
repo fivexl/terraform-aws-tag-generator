@@ -1,4 +1,15 @@
-[![FivexL](https://releases.fivexl.io/fivexlbannergit.jpg)](https://fivexl.io/)
+[![FivexL](https://releases.fivexl.io/fivexlbannergit_new.png)](https://fivexl.io/#email-subscription)
+
+### Want practical AWS infrastructure insights?
+
+👉 [Subscribe to our newsletter](https://fivexl.io/#email-subscription) to get:
+
+- Real stories from real AWS projects  
+- No-nonsense DevOps tactics  
+- Cost, security & compliance patterns that actually work  
+- Expert guidance from engineers in the field
+
+=========================================================================
 
 # AWS Tag Generator Terraform module
 Simple tag generator for AWS resources based on FivexL expirience and [best practices from AWS](https://d1.awsstatic.com/whitepapers/aws-tagging-best-practices.pdf)  
