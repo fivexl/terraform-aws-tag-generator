@@ -106,4 +106,5 @@ jobs:
           for dir in examples/complete examples/asg_tags; do
             terraform -chdir="$dir" init -input=false
             terraform -chdir="$dir" apply -auto-approve -input=false
+            terraform -chdir="$dir" destroy -auto-approve -input=false
           done
