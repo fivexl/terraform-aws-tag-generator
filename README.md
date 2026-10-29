@@ -52,7 +52,7 @@ No modules.
 | <a name="input_backup_frequency"></a> [backup\_frequency](#input\_backup\_frequency) | pre templated tag `default:backup:frequency`. Backup frequency (daily/weekly/monthly) | `string` | `""` | no |
 | <a name="input_backup_other"></a> [backup\_other](#input\_backup\_other) | pre templated tag `default:backup:other`. Other for Backup | `string` | `""` | no |
 | <a name="input_custom_numbers"></a> [custom\_numbers](#input\_custom\_numbers) | custom tags, which must be strings. e.g. (`default:custom:mynumber = 5000`) | `map(number)` | `{}` | no |
-| <a name="input_custom_prefix"></a> [custom\_prefix](#input\_custom\_prefix) | secondary level prefix for custom tags, which could be added by `custom_strings` and `custom_numbers` | `string` | `"custom"` | no |
+| <a name="input_custom_prefix"></a> [custom\_prefix](#input\_custom\_prefix) | secondary level prefix for custom tags, which could be added by `custom_strings` and `custom_numbers`. Set to `""` to add custom tags without any prefix, e.g. `aws-apn-id-<id> = "pc:<product-code>"` | `string` | `"custom"` | no |
 | <a name="input_custom_strings"></a> [custom\_strings](#input\_custom\_strings) | custom tags, which must be strings. e.g. (`default:custom:mystring = "mystring"`) | `map(string)` | `{}` | no |
 | <a name="input_data_classification"></a> [data\_classification](#input\_data\_classification) | pre templated tag `default:data:classification`. Data classification (restricted/confidential) | `string` | `""` | no |
 | <a name="input_data_other"></a> [data\_other](#input\_data\_other) | pre templated tag `default:data:other`. Other for Data | `string` | `""` | no |

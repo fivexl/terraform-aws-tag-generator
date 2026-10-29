@@ -133,7 +133,7 @@ variable "backup_other" {
 }
 
 variable "custom_prefix" {
-  description = "secondary level prefix for custom tags, which could be added by `custom_strings` and `custom_numbers`"
+  description = "secondary level prefix for custom tags, which could be added by `custom_strings` and `custom_numbers`. Set to `\"\"` to add custom tags without any prefix, e.g. `aws-apn-id-<id> = \"pc:<product-code>\"`"
   type        = string
   default     = "custom"
 }

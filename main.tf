@@ -66,10 +66,13 @@ locals {
   backup_frequency_value    = var.backup_frequency != "" ? { (local.backup_frequency) = var.backup_frequency } : {}
   backup_other_value        = var.backup_other != "" ? { (local.backup_other) = var.backup_other } : {}
 
-  custom_prefix = lower(var.custom_prefix)
+  # Empty custom_prefix emits custom tags as is, for keys AWS dictates
+  # (e.g. Partner Revenue Measurement `aws-apn-id-<id>`)
+  custom_prefix     = lower(var.custom_prefix)
+  custom_key_prefix = local.custom_prefix == "" ? "" : "${local.main_prefix}${var.separator}${local.custom_prefix}${var.separator}"
   custom_value = merge(
-    { for k, v in var.custom_strings : join(var.separator, [local.main_prefix, local.custom_prefix, lower(k)]) => v },
-    { for k, v in var.custom_numbers : join(var.separator, [local.main_prefix, local.custom_prefix, lower(k)]) => v },
+    { for k, v in var.custom_strings : "${local.custom_key_prefix}${lower(k)}" => v },
+    { for k, v in var.custom_numbers : "${local.custom_key_prefix}${lower(k)}" => v },
   )
 
   result_git = merge(
