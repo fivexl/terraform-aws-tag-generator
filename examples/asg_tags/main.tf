@@ -28,6 +28,10 @@ resource "aws_launch_template" "test" {
   name_prefix   = "test-lt-"
   image_id      = data.aws_ami.amazon_linux2.id
   instance_type = "t2.micro"
+
+  metadata_options {
+    http_tokens = "required"
+  }
 }
 
 resource "aws_autoscaling_group" "test" {

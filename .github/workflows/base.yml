@@ -2,108 +2,109 @@ name: 'base'
 
 on:
   push:
-    tags: [ v* ]
-    branches: [ master ]
+    tags: [ '*' ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+env:
+  TERRAFORM_VERSION: 1.17.1
 
 jobs:
   tflint:
     name: TFLint
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - uses: terraform-linters/setup-tflint@v3
-        name: Setup TFLint
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: terraform-linters/setup-tflint@6ffdbaa3be476b3431f7275c26966ef32ff60337 # v6.3.2
         with:
-          tflint_version: v0.46.0      
-      - name: TFLint
-        run: |
-          tflint -f compact
+          tflint_version: v0.65.0
+      - run: tflint --init
         env:
-          GITHUB_TOKEN: ${{ github.token }}  # https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/plugins.md#avoiding-rate-limiting
+          GITHUB_TOKEN: ${{ github.token }} # avoids rate limiting when downloading plugins
+      - run: tflint --recursive -f compact
 
   fmt:
     name: fmt
-    runs-on: ubuntu-20.04
-    container:
-      image: hashicorp/terraform:latest
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - run: terraform fmt --recursive -check=true
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+      - run: terraform fmt -recursive -check
 
   validate:
     name: validate
-    runs-on: ubuntu-20.04
-    container:
-      image: hashicorp/terraform:latest
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dir: [ ".", examples/complete, examples/asg_tags, examples/awscc_tags ]
     steps:
-      - uses: actions/checkout@master
-      - name: terraform validate
-        run: |
-          terraform init
-          terraform validate -no-color
-        env:
-          AWS_DEFAULT_REGION: "eu-central-1"
-
-  tfsec:
-    name: TFSec
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@master
-      - name: TFSec
-        uses: triat/terraform-security-scan@v3.0.3
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
         with:
-          tfsec_actions_comment: false
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+      - run: terraform init -backend=false
+        working-directory: ${{ matrix.dir }}
+      - run: terraform validate -no-color
+        working-directory: ${{ matrix.dir }}
 
-  localstack:
-    name: localstack
-    runs-on: ubuntu-22.04
-    defaults:
-      run:
-        shell: bash    
+  test:
+    name: terraform test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+      - run: terraform init
+      - run: terraform test -no-color
+
+  trivy:
+    name: Trivy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: config
+          exit-code: '1'
+          severity: HIGH,CRITICAL
+
+  # Applies the examples that create AWS resources, so tag lists the module
+  # produces are accepted by the AWS API shape (e.g. ASG `tag` blocks).
+  floci:
+    name: floci
+    runs-on: ubuntu-latest
     env:
-      AWS_DEFAULT_REGION: "eu-central-1"
-      TF_CLI_ARGS_plan: "-compact-warnings"
-      TF_CLI_ARGS_apply: "-compact-warnings"     
+      AWS_ENDPOINT_URL: http://localhost:4566
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_DEFAULT_REGION: us-east-1
     services:
-      localstack-service:
-        image: localstack/localstack
+      floci:
+        image: floci/floci:2.3.0
         ports:
           - "4566:4566"
-          - "4510-4559:4510-4559"
-        env:
-          #SERVICES: "sqs,s3"
-          FORCE_NONINTERACTIVE: 1
-          AWS_ACCESS_KEY_ID: test
-          AWS_SECRET_ACCESS_KEY: test
-        options: >-
-          --health-cmd "./bin/localstack status services"
-          --health-interval 10s 
-          --health-timeout 5s 
-          --health-retries 5
-          --health-start-period 15s 
         volumes:
-          - /var/run/docker.sock:/var/run/docker.sock # https://docs.localstack.cloud/references/lambda-provider-v2/#docker-not-available 
+          - /var/run/docker.sock:/var/run/docker.sock # EC2 instances run as Docker containers
     steps:
-      - uses: actions/checkout@master
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
         with:
-          terraform_version: 1.4.4
-
-      - name: Terraform-local installation
-        run: pip3 install terraform-local
-
-      - name: terraform init
-        run: tflocal init
-        
-      - name: terraform validate
-        run: tflocal validate
-        
-      - name: terraform plan
-        run: tflocal plan -out=plan.tfplan
-
-      - name: terraform apply
-        run: tflocal apply -auto-approve plan.tfplan
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+          terraform_wrapper: false
+      - name: Wait for Floci
+        run: timeout 60 bash -c 'until curl -s -o /dev/null http://localhost:4566; do sleep 2; done'
+      - name: Apply examples
+        run: |
+          for dir in examples/complete examples/asg_tags; do
+            terraform -chdir="$dir" init -input=false
+            terraform -chdir="$dir" apply -auto-approve -input=false
+            terraform -chdir="$dir" destroy -auto-approve -input=false
+          done
